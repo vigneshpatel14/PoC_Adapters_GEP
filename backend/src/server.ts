@@ -53,16 +53,22 @@ if (process.env.DISCORD_TOKEN) {
 // Initialize all adapters
 (async () => {
   try {
+    console.log("Initializing web adapter...");
     // Initialize Web adapter
     await webAdapter.initialize();
+    console.log("Web adapter initialized successfully");
 
+    console.log("Checking if Slack adapter needs initialization...");
     // Initialize Slack adapter if available
     if (slackAdapter && slackApp) {
+      console.log("Initializing Slack adapter...");
       await slackAdapter.initialize();
+      console.log("Slack adapter initialized successfully");
     }
 
     // Start Express server
     const PORT = process.env.PORT || 3000;
+    console.log(`Starting Express server on port ${PORT}...`);
     app.listen(PORT, () => {
       console.log(`✓ Backend server running on http://localhost:${PORT}`);
       console.log(`✓ Web chat endpoint: POST http://localhost:${PORT}/api/chat`);
@@ -71,6 +77,7 @@ if (process.env.DISCORD_TOKEN) {
 
     // Start Slack app with Socket Mode if available
     if (slackApp && process.env.SLACK_BOT_TOKEN && process.env.SLACK_APP_TOKEN) {
+      console.log("Starting Slack bot...");
       await slackApp.start(process.env.SLACK_PORT || 3001);
       console.log(`✓ Slack bot running on Socket Mode (port ${process.env.SLACK_PORT || 3001})`);
     }
@@ -81,6 +88,7 @@ if (process.env.DISCORD_TOKEN) {
     console.log(`  Configured tenants: ${gateway.listTenants().join(", ")}`);
   } catch (error) {
     console.error("Failed to initialize server:", error);
+    console.error("Error stack:", (error as Error).stack);
     process.exit(1);
   }
 })();

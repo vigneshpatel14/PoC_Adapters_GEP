@@ -132,8 +132,8 @@ export function ChatInterface() {
               type="text"
               value={userId}
               onChange={(e) => setUserId(e.target.value)}
-              disabled
-              title="User ID (read-only)"
+              placeholder="web-user-..."
+              title="User ID - edit to test different users"
             />
           </div>
           <div className="setting-group">

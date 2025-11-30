@@ -33,12 +33,37 @@ export class TenantConfigLoader {
         enabled: !!process.env.DISCORD_TOKEN,
       },
       agentConfig: {
-        invokeUrl: process.env.AGENT_INVOKE_URL || "http://localhost:3000/api/chat",
+        invokeUrl: process.env.AGENT_INVOKE_URL || "http://localhost:3000/api/agent",
         timeout: 30000,
       },
     };
 
     this.tenants.set("default", defaultTenant);
+
+    // Add ACME tenant for multi-tenancy testing
+    const acmeTenant: TenantConfig = {
+      tenantId: "acme",
+      name: "ACME Corporation",
+      slack: {
+        botToken: process.env.SLACK_BOT_TOKEN || "",
+        appToken: process.env.SLACK_APP_TOKEN || "",
+        signingSecret: process.env.SLACK_SIGNING_SECRET || "",
+        enabled: !!process.env.SLACK_BOT_TOKEN,
+      },
+      web: {
+        enabled: true,
+      },
+      discord: {
+        token: process.env.DISCORD_TOKEN,
+        enabled: !!process.env.DISCORD_TOKEN,
+      },
+      agentConfig: {
+        invokeUrl: process.env.AGENT_INVOKE_URL || "http://localhost:3000/api/agent",
+        timeout: 30000,
+      },
+    };
+
+    this.tenants.set("acme", acmeTenant);
 
     // Add any additional tenants from environment
     // Format: TENANTS_JSON='[{"tenantId":"tenant1","name":"Tenant 1",...}]'

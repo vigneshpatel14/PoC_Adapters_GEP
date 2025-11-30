@@ -1,4 +1,4 @@
-import { App, GenericMessageEvent } from "@slack/bolt";
+import { App } from "@slack/bolt";
 import { ChatGateway } from "../gateway/gateway";
 import { GatewayAdapter } from "../gateway/types";
 
@@ -21,22 +21,17 @@ export class SlackAdapter implements GatewayAdapter {
    * Initialize the Slack adapter with event listeners
    */
   async initialize(): Promise<void> {
-    this.slackApp.message(this.handleMessage.bind(this));
+    // Use arrow function to preserve 'this' context
+    this.slackApp.message(async (args: any) => {
+      await this.handleMessage(args);
+    });
     console.log("Slack adapter initialized");
   }
 
   /**
    * Handle incoming messages from Slack
    */
-  private async handleMessage({
-    message,
-    say,
-    client,
-  }: {
-    message: GenericMessageEvent;
-    say: (message: string) => Promise<void>;
-    client: any;
-  }): Promise<void> {
+  private async handleMessage({ message, say, client }: any): Promise<void> {
     try {
       if (message.type !== "message" || message.subtype) {
         return;

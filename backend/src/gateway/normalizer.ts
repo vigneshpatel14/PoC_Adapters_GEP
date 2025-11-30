@@ -43,8 +43,6 @@ export class MessageNormalizer {
     userId: string,
     sessionId: string,
     tenantId: string,
-    channelId: string,
-    threadId?: string,
     metadata?: any
   ): UnifiedMessage {
     // Remove bot mentions from text
@@ -58,8 +56,8 @@ export class MessageNormalizer {
       platform: "slack",
       text: cleanText,
       metadata: {
-        channelId,
-        threadId,
+        channelId: metadata?.channelId,
+        threadId: metadata?.threadId,
         timestamp: Date.now(),
         ...metadata,
       },
@@ -101,10 +99,10 @@ export class MessageNormalizer {
     return (
       !!msg.id &&
       !!msg.userId &&
-      !!msg.sessionId &&
       !!msg.tenantId &&
       !!msg.platform &&
       !!msg.text
+      // sessionId is optional at validation time - it will be assigned from session manager
     );
   }
 }

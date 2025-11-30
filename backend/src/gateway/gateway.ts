@@ -133,8 +133,8 @@ export class ChatGateway {
       // Get or create session
       const session = this.sessionManager.getOrCreateSession(
         normalizedMessage.userId,
-        platform,
-        tenantId
+        tenantId,
+        platform
       );
       normalizedMessage.sessionId = session.sessionId;
 

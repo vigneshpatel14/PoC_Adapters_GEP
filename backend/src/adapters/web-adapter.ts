@@ -22,6 +22,7 @@ export class WebAdapter implements GatewayAdapter {
    */
   async initialize(): Promise<void> {
     this.app.post("/api/chat", this.handleMessage.bind(this));
+    this.app.post("/api/agent", this.handleAgentRequest.bind(this));
     this.app.get("/api/session/:sessionId", this.getSession.bind(this));
     this.app.get("/api/sessions", this.listSessions.bind(this));
     this.app.get("/health", this.healthCheck.bind(this));
@@ -60,6 +61,28 @@ export class WebAdapter implements GatewayAdapter {
       res.json(response);
     } catch (error) {
       console.error("Web adapter error:", error);
+      res.status(500).json({
+        success: false,
+        response: "Internal server error",
+        sessionId: req.body.sessionId,
+      });
+    }
+  }
+
+  /**
+   * Internal agent endpoint for gateway invocation
+   * Accepts unified message format for testing/internal use
+   */
+  private async handleAgentRequest(req: any, res: any) {
+    try {
+      // This endpoint receives unified messages directly
+      res.json({
+        response: "Agent received message",
+        success: true,
+        sessionId: req.body.sessionId || "",
+      });
+    } catch (error) {
+      console.error("Agent endpoint error:", error);
       res.status(500).json({
         success: false,
         response: "Internal server error",
