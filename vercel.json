@@ -4,6 +4,6 @@
   "framework": "express",
   "buildCommand": "cd backend && npm install && npm run build && cd ../frontend && npm install && npm run build",
   "outputDirectory": "backend/dist",
-  "regions": ["iad1"],
+  "regions": ["iad1"]
 }
 
