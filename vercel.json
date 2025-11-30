@@ -1,85 +1,22 @@
 {
   "version": 2,
   "name": "chat-gateway-poc",
+  "framework": "express",
+  "nodeVersion": "20.x",
+  "buildCommand": "cd backend && npm install && npm run build && cd ../frontend && npm install && npm run build",
+  "outputDirectory": "backend/dist",
   "regions": ["iad1"],
-  "env": {
-    "SLACK_BOT_TOKEN": {
-      "description": "Slack bot token (xoxb-...)",
-      "required": true
-    },
-    "SLACK_APP_TOKEN": {
-      "description": "Slack app token (xapp-...)",
-      "required": true
-    },
-    "SLACK_SIGNING_SECRET": {
-      "description": "Slack signing secret",
-      "required": true
-    },
-    "AGENT_INVOKE_URL": {
-      "description": "Agent invocation URL",
-      "required": false,
-      "default": "http://localhost:3000/api/agent"
-    },
+  "env": [
+    "SLACK_BOT_TOKEN",
+    "SLACK_APP_TOKEN", 
+    "SLACK_SIGNING_SECRET",
+    "AGENT_INVOKE_URL",
+    "NODE_ENV"
+  ],
+  "envs": {
     "NODE_ENV": {
-      "description": "Node environment",
       "default": "production"
     }
-  },
-  "buildCommand": "npm --prefix backend run vercel-build && npm --prefix frontend run vercel-build",
-  "functions": {
-    "api/**/*.ts": {
-      "memory": 1024,
-      "maxDuration": 60
-    }
-  },
-  "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "backend/dist/server.js"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "frontend/dist/$1"
-    }
-  ],
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=0, must-revalidate"
-        },
-        {
-          "key": "X-Content-Type-Options",
-          "value": "nosniff"
-        },
-        {
-          "key": "X-Frame-Options",
-          "value": "DENY"
-        }
-      ]
-    },
-    {
-      "source": "/api/(.*)",
-      "headers": [
-        {
-          "key": "Access-Control-Allow-Credentials",
-          "value": "true"
-        },
-        {
-          "key": "Access-Control-Allow-Origin",
-          "value": "*"
-        },
-        {
-          "key": "Access-Control-Allow-Methods",
-          "value": "GET,OPTIONS,PATCH,DELETE,POST,PUT"
-        },
-        {
-          "key": "Access-Control-Allow-Headers",
-          "value": "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"
-        }
-      ]
-    }
-  ]
+  }
 }
+
