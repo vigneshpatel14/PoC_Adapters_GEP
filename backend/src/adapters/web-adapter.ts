@@ -72,21 +72,14 @@ export class WebAdapter implements GatewayAdapter {
   /**
    * Internal agent endpoint for gateway invocation
    * Accepts unified message format for testing/internal use
-   * Mock agent that echoes back responses for PoC testing
    */
   private async handleAgentRequest(req: any, res: any) {
     try {
-      const { message, userId, tenantId, sessionId } = req.body;
-
-      // Mock agent responses based on keywords
-      let mockResponse = this.generateMockResponse(message, tenantId);
-
+      // This endpoint receives unified messages directly
       res.json({
-        response: mockResponse,
+        response: "Agent received message",
         success: true,
-        sessionId: sessionId || "",
-        agentType: "mock",
-        timestamp: new Date().toISOString(),
+        sessionId: req.body.sessionId || "",
       });
     } catch (error) {
       console.error("Agent endpoint error:", error);
@@ -96,38 +89,6 @@ export class WebAdapter implements GatewayAdapter {
         sessionId: req.body.sessionId,
       });
     }
-  }
-
-  /**
-   * Generate mock agent responses for different keywords
-   * This is for PoC testing - replace with real agent later
-   */
-  private generateMockResponse(message: string, tenantId: string): string {
-    const msg = message.toLowerCase();
-    const tenant = tenantId || "default";
-
-    // Mock responses for common queries
-    if (msg.includes("hello") || msg.includes("hi")) {
-      return `Hello from tenant '${tenant}'! 👋 How can I help you today?`;
-    }
-    if (msg.includes("weather")) {
-      return `The weather in ${tenant}'s region is sunny and 72°F. Have a great day! ☀️`;
-    }
-    if (msg.includes("time")) {
-      return `Current time: ${new Date().toLocaleTimeString()}`;
-    }
-    if (msg.includes("help")) {
-      return `I'm a mock agent for PoC testing. Try asking me about: weather, time, or just say hello! 💬`;
-    }
-    if (msg.includes("who are you")) {
-      return `I'm a mock Chat Gateway agent running on tenant '${tenant}'. I'm here to demonstrate multi-tenant, multi-channel message processing! 🚀`;
-    }
-    if (msg.includes("tenant")) {
-      return `You're currently using tenant: '${tenant}'. All your sessions and data are isolated per tenant. 🔒`;
-    }
-
-    // Default response
-    return `Mock agent response for tenant '${tenant}': You said "${message}". This is a PoC mock agent - connect a real agent to production! 🤖`;
   }
 
   /**

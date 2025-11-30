@@ -11,13 +11,6 @@ import { DiscordAdapter, setupDiscordAdapter } from "./adapters/discord-adapter"
 // Load environment variables from .env file
 dotenv.config();
 
-// Set default AGENT_INVOKE_URL if not provided (mock agent for PoC)
-if (!process.env.AGENT_INVOKE_URL) {
-  const port = process.env.PORT || 3000;
-  process.env.AGENT_INVOKE_URL = `http://localhost:${port}/api/agent`;
-  console.log("ℹ No AGENT_INVOKE_URL set - using mock agent at", process.env.AGENT_INVOKE_URL);
-}
-
 const app = express();
 const agent = new Agent();
 
