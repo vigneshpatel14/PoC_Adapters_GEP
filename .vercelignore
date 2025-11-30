@@ -1,0 +1,8 @@
+node_modules
+.git
+.env.local
+.env.*.local
+*.md
+test-gateway.ps1
+deploy.sh
+deploy.bat

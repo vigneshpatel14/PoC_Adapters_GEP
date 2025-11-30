@@ -5,8 +5,9 @@
   "main": "dist/server.js",
   "scripts": {
     "dev": "ts-node src/server.ts",
-    "build": "tsc",
-    "start": "node dist/server.js"
+    "build": "tsc && echo 'Build complete'",
+    "start": "node dist/server.js",
+    "vercel-build": "tsc"
   },
   "dependencies": {
     "@slack/bolt": "^3.15.0",
