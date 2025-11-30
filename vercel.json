@@ -11,11 +11,6 @@
     "SLACK_SIGNING_SECRET",
     "AGENT_INVOKE_URL",
     "NODE_ENV"
-  ],
-  "envs": {
-    "NODE_ENV": {
-      "default": "production"
-    }
-  }
+  ]
 }
 
